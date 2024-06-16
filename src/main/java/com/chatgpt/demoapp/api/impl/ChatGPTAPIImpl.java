@@ -2,6 +2,7 @@ package com.chatgpt.demoapp.api.impl;
 
 import com.chatgpt.demoapp.api.ChatGPTAPI;
 import com.chatgpt.demoapp.dto.request.ChatGPTRequest;
+import com.chatgpt.demoapp.dto.response.ChatCompletionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +14,7 @@ public class ChatGPTAPIImpl implements ChatGPTAPI {
     private RestTemplate restTemplate;
 
     @Override
-    public String consumeApi(ChatGPTRequest chatGPTRequest) {
-        return restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", chatGPTRequest, String.class).getBody();
+    public ChatCompletionResponse consumeApi(ChatGPTRequest chatGPTRequest) {
+        return restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", chatGPTRequest, ChatCompletionResponse.class).getBody();
     }
 }

@@ -1,14 +1,14 @@
 package com.chatgpt.demoapp.service;
 
 import com.chatgpt.demoapp.api.ChatGPTAPI;
-import com.chatgpt.demoapp.dto.ChatGPTDetailDTO;
-import com.chatgpt.demoapp.dto.DemoInputDTO;
-import com.chatgpt.demoapp.dto.DemoOutputDTO;
+import com.chatgpt.demoapp.dto.*;
 import com.chatgpt.demoapp.dto.request.ChatGPTRequest;
+import com.chatgpt.demoapp.dto.response.ChatCompletionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 public class DemoServiceImpl implements DemoService {
@@ -28,7 +28,12 @@ public class DemoServiceImpl implements DemoService {
                 .chatGPTDetails(Arrays.asList(chatGPTDetailDTO))
                 .build();
 
-        String output = chatGPTAPI.consumeApi(chatGPTRequest);
+
+        ChatCompletionResponse chatCompletionResponse = chatGPTAPI.consumeApi(chatGPTRequest);
+        String output = chatCompletionResponse.getChoices().stream()
+                .map(ChoiceDTO::getMessage)
+                .map(MessageDTO::getContent)
+                .collect(Collectors.joining("\n"));
         return DemoOutputDTO.builder().output(output).build();
     }
 }
