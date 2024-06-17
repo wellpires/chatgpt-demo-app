@@ -17,4 +17,5 @@ public class ChatGPTAPIImpl implements ChatGPTAPI {
     public ChatCompletionResponse consumeApi(ChatGPTRequest chatGPTRequest) {
         return restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", chatGPTRequest, ChatCompletionResponse.class).getBody();
     }
+
 }

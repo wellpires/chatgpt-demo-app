@@ -1,7 +1,8 @@
 package com.chatgpt.demoapp.controller;
 
+import com.chatgpt.demoapp.dto.request.WhatsAppBusinessAccountRequest;
+import com.chatgpt.demoapp.service.MessageGPTConnectorService;
 import com.chatgpt.demoapp.service.MessageListenerService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,14 @@ public class MessageListenerController {
     @Autowired
     private MessageListenerService messageListenerService;
 
+    @Autowired
+    private MessageGPTConnectorService messageGPTConnectorService;
+
     @PostMapping(path = "/webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> receiveMessage(@RequestBody JsonNode body) {
-        System.out.println(body.toPrettyString());
+    public ResponseEntity<Void> receiveMessage(@RequestBody WhatsAppBusinessAccountRequest whatsAppBusinessAccountRequest) throws Exception {
+
+        messageGPTConnectorService.start(whatsAppBusinessAccountRequest);
+
         return ResponseEntity.ok().build();
     }
 
